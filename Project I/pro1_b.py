@@ -7,12 +7,11 @@ import numpy
 def square_match(originalKp, rotateKp):
 
 	'''
-
 	:param originalKp: the keypoint before rotation
 	:param rotateKp:
 	:return: if match, return 1
 	'''
-	if abs(originalKp[0] - rotateKp[0]) <2 && abs(originalKp[1] - rotateKp[1]) < 2
+	if abs(originalKp[0] - rotateKp[0]) <= 2 && abs(originalKp[1] - rotateKp[1]) <= 2
 	return 1
 
 
@@ -43,7 +42,7 @@ for i in range(len(kp)):
     # idealKp[i] = numpy.dot(rotM, (oriKp[i].transpose() - centroid)) + centroid
     idealKp[i] = numpy.dot((oriKp[i] - centroid), rotM) + centroid
     # idealKp[i] = roM.transpose * (oriKp[i] - centroid.transpose()) + centroid
-# got stuck in array mulplication for quite a long time, make sure +/- matrices in the same size
+# got stuck in array multiplication for quite a long time, make sure +/- matrices in the same size
 
 roKp, roDescriptor = sift.detectAndCompute(roImg, None)
 # cv2.DescriptorMatcher.radiusMatch(queryDescriptors=roDescriptor, trainDescriptors=descriptor, maxDistance=2)
@@ -53,9 +52,14 @@ rotKp = numpy.ndarray((len(roKp),2))
 for i in range(len(roKp)):
 	rotKp[i] = (roKp[i].pt[0], roKp[i].pt[1])
 
+	
+## the number of keypoints matched successfullly in rotated image 
+repeatability = []
 match = 0
 for originalKp in oriKp:
 	for rotateKp in rotKp:
 		match = match + square_match(originalKp, rotateKp)
+		
+repeatability.append(match / len(oriKp))
 
-repeatability = match / len(oriKp)
+plt.plot(range(0,360,15), repeatability)
