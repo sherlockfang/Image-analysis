@@ -1,0 +1,36 @@
+import cv2
+from matplotlib import pyplot as plt
+
+
+def SIFT_keypoint_detector(img, contrastThrehold, edgeThreshold):
+	'''
+
+	:param img: the source image
+	:param contrastThrehold:
+	:param edgeThreshold:
+	:return: an image with keypoint mark
+	'''
+
+	## create a SIFT
+	sift = cv2.xfeatures2d.SIFT_create(contrastThreshold=contrastThrehold, edgeThreshold=edgeThreshold)
+	# find keypoints and descriptors
+	kp, des = sift.detectAndCompute(img, None)
+	# after using drawKeypoints, the original image changed
+	return cv2.drawKeypoints(img, kp, img, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+
+img = cv2.imread("obj1_5.jpg")
+
+contrastT = 0.05
+edgeT = 9
+
+# img = SIFT_keypoint_detector(img, contrastT, edgeT)
+plt.imshow(cv2.cvtColor(SIFT_keypoint_detector(img, contrastT, edgeT), cv2.COLOR_BGR2RGB))
+plt.title('Image with keypoints')
+plt.show()
+
+##cv2.waitKey(0)
+##cv2.destroyAllWindows()
+##cv2.imwrite('sift_kp.png', img)
+
+
