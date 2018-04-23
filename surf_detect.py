@@ -9,4 +9,4 @@ img = cv2.drawKeypoints(img, kp, img, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEY
 cv2.imshow('surf_kp', img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-cv2.imwrite('surf_kp.png', img)
+# cv2.imwrite('surf_kp.png', img)
